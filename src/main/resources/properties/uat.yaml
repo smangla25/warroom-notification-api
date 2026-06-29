@@ -1,0 +1,12 @@
+# UAT properties - warroom-notification-api
+mule.env: uat
+http.port: 8081
+
+smtp.host: smtp-uat.internal.example.com
+smtp.port: 587
+
+twilio.accountSid: AC_UAT_TEST_12345
+
+log.level: DEBUG
+
+api.autodiscovery.id: "warroom-notification-api-uat"

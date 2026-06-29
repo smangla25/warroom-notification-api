@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+  <!-- NOTE: No policies applied in API Manager for this scenario -->
+
+  <flow name="send-email-notification-flow">
+    <http:listener config-ref="http-listener-config" path="/notifications/email" allowedMethods="POST"/>
+    <logger level="INFO" message="Sending email notification - type: #[payload.type]"/>
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{ notificationId: uuid(), status: "QUEUED", channel: "EMAIL" }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+
+  <flow name="send-sms-notification-flow">
+    <http:listener config-ref="http-listener-config" path="/notifications/sms" allowedMethods="POST"/>
+    <logger level="INFO" message="Sending SMS notification"/>
+    <ee:transform>
+      <ee:message>
+        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{ notificationId: uuid(), status: "QUEUED", channel: "SMS" }]]></ee:set-payload>
+      </ee:message>
+    </ee:transform>
+  </flow>
+
+</mule>

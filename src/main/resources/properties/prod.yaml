@@ -1,0 +1,12 @@
+# Production properties - warroom-notification-api
+mule.env: prod
+http.port: 8081
+
+smtp.host: ${smtp.host}
+smtp.port: 587
+
+twilio.accountSid: ${twilio.accountSid}
+
+log.level: INFO
+
+api.autodiscovery.id: "warroom-notification-api-prod"
